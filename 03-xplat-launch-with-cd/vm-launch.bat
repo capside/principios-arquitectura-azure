@@ -1,13 +1,13 @@
 @echo off
 if [%1]==[] exit
 
-SET resource_group=%1-rg
+SET resource_group=%1rg
 SET vm_name=vm%1
 SET username=%1
 SET region=westeurope
 SET storage_account=%1vmstorage
-SET vnet_name=%1-vnet
-SET subnet_name=%1-subnet
+SET vnet_name=%1vnet
+SET subnet_name=%1subnet
 
 call azure provider register --namespace Microsoft.Network
 call azure provider register --namespace Microsoft.Storage

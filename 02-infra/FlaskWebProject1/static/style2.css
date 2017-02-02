@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Bangers|Fira+Sans+Extra+Condensed:300,400');
+
+body            { background: #CDBB79; }
+a, h1, h2       { color: #CDBB79; }
+h1, h2          { font-family: 'Bangers', cursive; margin: 0; }
+h1              { border-bottom: 2px solid #eee; }
+h2              { font-size: 1.2em; }
+
+.page           { font-family: 'Fira Sans Extra Condensed', sans-serif; margin: 2em auto; width: 35em; border: 5px solid #51A39D;
+                  padding: 0.8em; background: #B7695C; }
+.entries        { list-style: none; margin: 0; padding: 0; }
+.entries li     { margin: 0.8em 1.2em; }
+.entries li h2  { margin-left: -1em; }
+.add-entry      { font-size: 0.9em; border-bottom: 1px solid #ccc; }
+.add-entry dl   { font-weight: bold; }
+.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
+                  margin-bottom: 1em; background: #fafafa; }
+.cajita         { font-size: 150%; padding: 2em; }
+.flash          { background: #CEE5F5; padding: 0.5em;
+                  border: 1px solid #AACBE2; }
+.button         { border-radius: 60%; font-size: 18px; margin: 4px 4px; padding: 8px 8px; background-color: #B7695C;
+                  font-family: 'Bangers', cursive; border: 2px solid #CDBB79; color: #CDBB79; box-shadow: 0 4px #CDBB7C; }
+.button:hover   { background-color: white; }
+.button:active  { transform: translateY(3px);box-shadow: 0 3px #CDBB7C;}
+.error          { background: #F0D6D6; padding: 0.5em; }

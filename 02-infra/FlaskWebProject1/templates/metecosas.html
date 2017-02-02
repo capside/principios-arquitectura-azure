@@ -1,0 +1,13 @@
+{% extends "plantillappal.html" %}
+{% block particular %}
+<div class="cajita">
+  <h2>Calculemos</h2>
+  <form action="{{ url_for('hi') }}" method="post">
+    <dl>
+      <dt>¿Cuántos puntos quieres usar para calcular &#960;?
+      <dd><input type="text" name="primercampo">
+      <dd><button type="submit" class="button" value="A calcular">A Calcular</button>
+    </dl>
+  </form>
+</div>
+{% endblock %}

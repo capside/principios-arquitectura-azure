@@ -1,0 +1,12 @@
+{% extends "plantillappal.html" %}
+{% block particular %}
+  <div class="cajita">
+      <p>
+      Esto es lo que he calculado como valor de &#960; mediante el método de Monte Carlo con <a style="color: red;">{{ puntos }}</a> puntos
+      </p>
+      <p><a style="font-size: 200%;">{{ valor }}</a></p>
+      <p>Error= <a style="color: red;">{{ error }}</a></p>
+      <p>Tiempo <a style="color: blue;">{{ tiempo }} </a> sg </p>
+      <p>¿Qué te parece?, Monte Carlo realmente converge muy muy despacio...</p>
+      </div>
+{% endblock %}  

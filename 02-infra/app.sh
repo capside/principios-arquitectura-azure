@@ -15,7 +15,8 @@ pip install uwsgi flask azure
 cd /opt
 
 echo "---CUSTOM Clonando app---"
-git clone https://github.com/macrujugl/aplicacion
+mkdir /opt/aplicacion
+git clone https://github.com/macrujugl/app2 aplicacion
 chown -R mario:www-data aplicacion
 cd /opt/aplicacion
 

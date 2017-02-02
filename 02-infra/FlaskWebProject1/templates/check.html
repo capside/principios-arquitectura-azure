@@ -1,0 +1,15 @@
+{% extends "plantillappal.html" %}
+{% block particular %}
+<div class="cajita">
+{% if fondo == 0 %}
+  <ul class="entries" style="color:red">
+{% elif fondo == 1 %}
+  <ul class="entries" style="color:blue">
+{% else %}
+  <ul class="entries" style="color:green">
+{% endif %}
+  El Nombre de esta máquina es <a style="font-size: 150%;">{{ machine }}</a>;
+  <p>¿Qué te parece?</p>
+  </ul>
+</div>
+{% endblock %}

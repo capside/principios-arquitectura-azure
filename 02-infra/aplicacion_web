@@ -1,0 +1,9 @@
+server {
+    listen 80 default_server;
+    server_name default;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/opt/aplicacion/aplicacion2.sock;
+    }
+}

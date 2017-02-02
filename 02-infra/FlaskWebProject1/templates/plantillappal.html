@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Una app cualquiera ...</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div class="page">
+        <h1>Una app cualquiera ...</h1>
+            {% block particular %}{% endblock %}
+        </div>
+    </body>
+</html>

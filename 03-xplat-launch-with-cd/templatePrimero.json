@@ -1,0 +1,202 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "String",
+            "defaultValue" : "westeurope"
+        },
+        "virtualMachineName": {
+            "type": "String",
+            "defaultValue" : "vmcita"
+        },
+        "virtualMachineSize": {
+            "type": "String",
+            "defaultValue" : "Standard_A1_v2"
+        },
+        "adminUsername": {
+            "type": "String",
+            "defaultValue" : "mario"
+        },
+        "storageAccountName": {
+            "type": "String",
+            "defaultValue" : "lololo"
+        },
+        "virtualNetworkName": {
+            "type": "String",
+            "defaultValue" : "vnet"
+        },
+        "networkInterfaceName": {
+            "type": "String",
+            "defaultValue" : "nic"
+        },
+        "networkSecurityGroupName": {
+            "type": "String",
+            "defaultValue" : "sg1"
+        },
+        "adminPublicKey": {
+            "type": "string",
+            "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6ozx8RMiWlkSZtKHfKsEtN+kX7nHfgnyZpbOmmkrIMgqVnpVl/o5uzSHCTutLhBZxSnB1G6ZtcEQWkmtdkKBXT+YY6aYf+dGkSnj1DPMud5Q58byDfZ4uV7BXxWxPnV9rMfAiA2LY7C2RInnV3WVwkOxJhnM0jDEzLoxP/3mHSbl0LNYacurfWZ7mmg4t/kwuTBdNKPzSOr8aw9HCjr1oB87U7yoM7GD1BCZYhN8DWPIjbDjsP9RJMYy3+0lHJcs/f9YxEqIV6pYESyEWo67AWCmZUNhAj7opsCt7VRei9csGa2GwbX5TMwF4tyvv9RGFuARYh/slf8qKfg+mMNg1 mario.arienza@capside.com",
+            "metadata": { "description": "This field must be a valid SSH public key." }
+        },
+        "addressPrefix": {
+            "type": "String",
+            "defaultValue": "10.1.0.0/16"
+        },
+        "subnetName": {
+            "type": "String",
+            "defaultValue": "sn1"
+        },
+        "subnetPrefix": {
+            "type": "String",
+            "defaultValue": "10.1.0.0/24"
+        },
+        "publicIpAddressName": {
+            "type": "String",
+            "defaultValue": "pubip1"
+        },
+        "publicIpAddressType": {
+            "type": "String",
+            "defaultValue": "Dynamic"
+        }
+    },
+    "variables": {
+        "vnetId": "[resourceId('vmcita','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+    },
+    "resources": [
+        {  "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachineName')]",
+            "apiVersion": "2016-04-30-preview",
+            "location": "[parameters('location')]",
+            "properties": {
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachineName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": "true",
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
+                                    "keyData": "[parameters('adminPublicKey')]"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "hardwareProfile": {
+                    "vmSize": "[parameters('virtualMachineSize')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[parameters('virtualMachineName')]",
+                        "createOption": "fromImage",
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS"
+                        }
+                    },
+                    "dataDisks": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]"
+            ]
+        },
+        {  "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworkName')]",
+            "apiVersion": "2016-09-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('addressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnetPrefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {  "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('networkSecurityGroupName')]",
+            "apiVersion": "2016-09-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "default-allow-ssh",
+                        "properties": {
+                            "priority": 1000,
+                            "sourceAddressPrefix": "*",
+                            "protocol": "TCP",
+                            "destinationPortRange": "22",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    }
+                ]
+            }
+        },
+        {   "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaceName')]",
+            "apiVersion": "2016-09-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": { "id": "[resourceId('vmcita','Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]" }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[resourceId('vmcita', 'Microsoft.Network/networkSecurityGroups', 'sg1')]"
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]"
+            ]
+        },
+        {   "type": "Microsoft.Network/publicIpAddresses",
+            "name": "[parameters('publicIpAddressName')]",
+            "apiVersion": "2016-09-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+            }
+        }
+    ],
+    "outputs": {
+        "adminUsername": {
+            "type": "String",
+            "value": "[parameters('adminUsername')]"
+        }
+    }
+}

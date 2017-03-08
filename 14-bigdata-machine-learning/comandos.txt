@@ -1,0 +1,9 @@
+pscp *.py sshuser@***clustername***-ssh.azurehdinsight.net:
+
+ssh sshuser@***clustername***-ssh.azurehdinsight.net
+
+sudo apt-get install dos2unix
+dos2unix -k -o *.py
+
+
+hadoop jar /usr/hdp/current/hadoop-mapreduce-client/hadoop-streaming.jar -files mapper.py,reducer.py -mapper mapper.py -reducer reducer.py -input wasb:///example/data/gutenberg/quijote.txt -output wasb:///example/wordcountout

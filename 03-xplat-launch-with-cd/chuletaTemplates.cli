@@ -4,4 +4,7 @@ azure group create -n vmcita -l westeurope --template-uri https://raw.githubuser
 CASO 2) Dos comandos, uno para crear el RG, otro para lanzar el deployment. Deployment explicito en modo incremental
 
 azure group create -n vmcita -l westeurope
+
 azure group deployment create --mode incremental --template-uri https://raw.githubusercontent.com/capside/principios-arquitectura-azure/master/03-xplat-launch-with-cd/templatePrimero.json  --resource-group vmcita --name deploytest
+
+azure group deployment create --mode incremental --template-uri https://raw.githubusercontent.com/capside/principios-arquitectura-azure/master/03-xplat-launch-with-cd/templateSegundo.json  --resource-group vmcita --name deploytest

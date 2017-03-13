@@ -206,7 +206,7 @@
             }
         },
         {   "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat('vmcita2','/CustomScriptForLinux')]",
+            "name": "[concat('vmcita','/CustomScriptForLinux')]",
             "apiVersion": "2015-06-15",
             "location": "westeurope",
             "properties": {

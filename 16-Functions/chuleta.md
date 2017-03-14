@@ -18,7 +18,7 @@
 3. Editar la función
     * New Function -> C# + Scenario Core + BlobTrigger-CSharp
     * Name -> BlobImageAnalysis
-    * Path -> `Uploaded/{name}`
+    * Path -> `pploaded/{name}`
     * Storage account connection -> AzureWebJobsDashboard
     * -> Create
         * Meter el código de funcion.cs
@@ -27,3 +27,18 @@
         * Añadir project.json
         * Meter el contenido del fichero
     * -> save
+    
+4. Dar de alta una subscripción al API Cognitiva
+   * Obtener una clave de API para el API "Computer Vision"
+   * Hay que habilitar el account creation (temperamental)
+   * Una vez creada, obtener el "API Key"
+   * Volver a la funcion -> "Function app settings"
+      * "Manage -> Go to App Service Settings"
+      * Application Settings -> App Setings
+        * Meter el KV
+        * SubscriptionKey - LaClaveDelAPI
+
+   * Scroll hasta la funcion (BlobImageAnalisys)
+   * Run -> Esperamos un 202 y una excepcion
+
+5. Probamos la funcion subiendo fotos al contenedor "Uploaded"

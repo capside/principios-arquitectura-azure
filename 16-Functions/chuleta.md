@@ -14,3 +14,16 @@
     * uploaded
     * accepted
     * rejected
+
+3. Editar la función
+    * New Function -> C# + Scenario Core + BlobTrigger-CSharp
+    * Name -> BlobImageAnalysis
+    * Path -> Uploaded/{name}
+    * Storage account connection -> AzureWebJobsDashboard
+    * -> Create
+        * Meter el código de funcion.cs
+    * -> save
+    * -> Add (para meter un fichero nuevo)
+        * Añadir project.json
+        * Meter el contenido del fichero
+    * -> save

@@ -18,7 +18,7 @@
 3. Editar la función
     * New Function -> C# + Scenario Core + BlobTrigger-CSharp
     * Name -> BlobImageAnalysis
-    * Path -> Uploaded/{name}
+    * Path -> `Uploaded/{name}`
     * Storage account connection -> AzureWebJobsDashboard
     * -> Create
         * Meter el código de funcion.cs

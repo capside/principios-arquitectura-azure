@@ -1,6 +1,6 @@
 # Chuleta Function
 
-1. - Crear Azure Function app
+1. Crear Azure Function app
    - Compute -> Function App 
                * Rellenar
                * Nombre de funcion

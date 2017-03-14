@@ -9,3 +9,8 @@
        * Storage Account -> Nueva
        * Location -> WestEurope
        * Storage Account -> Por defecto
+       
+2. Crear 3 containers en la SA (ojo a los nombres)
+    * uploaded
+    * accepted
+    * rejected

@@ -2,8 +2,8 @@
 
 1. - Crear Azure Function app
    - Compute -> Function App 
-               * -> Rellenar:
-               * Nombre de función
+               * Rellenar
+               * Nombre de funcion
                * Nuevo RG
                * Hosting Plan -> Consumption Plan
                * Storage Account -> Nueva

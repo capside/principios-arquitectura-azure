@@ -17,7 +17,7 @@ declare -r APP_SERVICE_FILE=/etc/systemd/system/aplicacion.service
 
 
 declare -r REPO=https://github.com/cowbotic/app2
-declare -r USER=mario
+declare -r USER=www-data
 declare -r GROUP=www-data
 
 # Packages to install, as arrays
@@ -31,7 +31,9 @@ declare -r -a PYTHON_LIBS=( uwsgi flask azure )
 update_packages(){
 #Expect to receive an array with packages names
     echo "---Start packages update & install---"
+    apt-mark hold walinuxagent
     apt-get update -y
+    apt-get upgrade
     apt-get install -y $@
     echo "---End packages update & install---"
 }
@@ -65,7 +67,7 @@ Description=Una app para uWSGI
 After=network.target
 
 [Service]
-User=mario
+User=www-data
 Group=www-data
 WorkingDirectory=/opt/aplicacion
 ExecStart=/usr/local/bin/uwsgi --ini /opt/aplicacion/aplicacion.ini --logto /opt/aplicacion/wsgi.log

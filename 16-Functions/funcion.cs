@@ -52,7 +52,7 @@ private async static Task<ImageAnalysisInfo> AnalyzeImageAsync(byte[] bytes, Tra
     HttpContent payload = new ByteArrayContent(bytes);
     payload.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/octet-stream");
     
-    var results = await client.PostAsync("https://api.projectoxford.ai/vision/v1.0/analyze?visualFeatures=Adult", payload);
+    var results = await client.PostAsync("https://westus.api.cognitive.microsoft.com/vision/v1.0/analyze?visualFeatures=Adult", payload);
     var result = await results.Content.ReadAsAsync<ImageAnalysisInfo>();
     return result;
 }
@@ -95,12 +95,13 @@ private static void StoreBlobWithMetadata(Stream image, string containerName, st
     }
 }
 
-// Converts a stream to a byte array 
+// Converts a stream to a byte array
 private async static Task<byte[]> ToByteArrayAsync(Stream stream)
 {
     Int32 length = stream.Length > Int32.MaxValue ? Int32.MaxValue : Convert.ToInt32(stream.Length);
     byte[] buffer = new Byte[length];
     await stream.ReadAsync(buffer, 0, length);
+    stream.Position = 0;
     return buffer;
 }
 

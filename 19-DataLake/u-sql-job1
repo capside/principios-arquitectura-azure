@@ -1,4 +1,4 @@
-// here we define the schema for the imported posts.tsv file
+// Schema definition for the imported posts.tsv file
 @posts =
     EXTRACT id                  int,
             [type]              string,
@@ -16,7 +16,7 @@
     FROM "posts.tsv"
     USING Extractors.Tsv();
 
-// here we transform the imported data using various aggregate functions
+// Transform the imported data using various aggregate functions
 @results =
     SELECT
         ownerid AS userid,

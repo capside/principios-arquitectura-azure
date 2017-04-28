@@ -1,3 +1,9 @@
+-HIVE
+DROP TABLE log4jLogs;
+CREATE EXTERNAL TABLE log4jLogs(t1 string, t2 string, t3 string, t4 string, t5 string, t6 string, t7 string) ROW FORMAT DELIMITED FIELDS TERMINATED BY ' ' STORED AS TEXTFILE LOCATION 'wasb:///example/data/';
+SELECT t4 AS sev, COUNT(*) AS cnt FROM log4jLogs WHERE t4 = '[ERROR]' GROUP BY t4;
+
+-MAP-REDUCE
 pscp *.py sshuser@***clustername***-ssh.azurehdinsight.net:
 
 ssh sshuser@***clustername***-ssh.azurehdinsight.net
@@ -7,3 +13,4 @@ dos2unix -k -o *.py
 
 
 hadoop jar /usr/hdp/current/hadoop-mapreduce-client/hadoop-streaming.jar -files mapper.py,reducer.py -mapper mapper.py -reducer reducer.py -input wasb:///example/data/gutenberg/quijote.txt -output wasb:///example/wordcountout
+

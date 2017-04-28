@@ -2,3 +2,23 @@ Chuleta
 
 Azure table
 DefaultEndpointsProtocol=https;AccountName=Azure Storage Account Name;AccountKey=blablabla
+
+
+SELECT [ProductID] as PartitionKey
+      ,[Name]
+      ,[ProductNumber]
+      ,[Color]
+      ,[StandardCost]
+      ,[ListPrice]
+      ,[Size]
+      ,[Weight]
+      ,[ProductCategoryID]
+      ,[ProductModelID]
+      ,[SellStartDate]
+      ,[SellEndDate]
+      ,[DiscontinuedDate]
+      ,[ThumbNailPhoto]
+      ,[ThumbnailPhotoFileName]
+      ,[rowguid]
+      ,[ModifiedDate]
+  FROM [SalesLT].[Product]

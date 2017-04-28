@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
-# Use the sys module
 import sys
 
-# 'file' in this case is STDIN
+# 'file', we use STDIN
 def read_input(file):
     # Split each line into words
     for line in file:

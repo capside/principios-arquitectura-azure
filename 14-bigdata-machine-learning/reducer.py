@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-# import modules
 from itertools import groupby
 from operator import itemgetter
 import sys
 
-# 'file' in this case is STDIN
+# 'file' we use STDIN
 def read_mapper_output(file, separator='\t'):
     # Go through each line
     for line in file:
@@ -16,9 +15,8 @@ def main(separator='\t'):
     # Read the data using read_mapper_output
     data = read_mapper_output(sys.stdin, separator=separator)
     # Group words and counts into 'group'
-    #   Since MapReduce is a distributed process, each word
-    #   may have multiple counts. 'group' will have all counts
-    #   which can be retrieved using the word as the key.
+    #   Since MapReduce is a distributed process, each word may have multiple counts. 
+    # 'group' will have all counts which can be retrieved using the word as the key.
     for current_word, group in groupby(data, itemgetter(0)):
         try:
             # For each word, pull the count(s) for the word

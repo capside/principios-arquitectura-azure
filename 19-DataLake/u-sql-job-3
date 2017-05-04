@@ -1,20 +1,15 @@
 USE DATABASE UserIntegration;
-@totals = 
-    EXTRACT userid     int,
-            totalscore int,
-            numofposts  int
-    FROM "datosprueba/totalscores.csv"
-    USING Extractors.Csv();
 
-@results =
-    SELECT
-        u.[displayname] AS [name],
-        tot.[totalscore] AS [score],
-        tot.[numofposts] AS [totalposts]
-    FROM
-        User AS u
-            INNER JOIN @totals AS tot ON tot.[userid] == u.[id];
+CREATE DATA SOURCE IF NOT EXISTS AcademicSEDb FROM AZURESQLDB WITH
+   ( PROVIDER_STRING = "Database=???YOUR-DB-NAME???;Trusted_Connection=False;Encrypt=True",
+     CREDENTIAL = FederatedCredential,
+     REMOTABLE_TYPES = (bool, byte, sbyte, short, ushort, int, long, ulong, decimal, float, double, string, DateTime) );
 
-OUTPUT @results
-    TO "datosprueba/totalscoreswithname.csv"
-    USING Outputters.Csv();
+CREATE EXTERNAL TABLE User (
+                        [id] int,
+                        [reputation] int,
+                        [created] DateTime,
+                        [displayname] string,
+                        [lastaccess] DateTime,
+                        [location] string
+                    ) FROM AcademicSEDb LOCATION "dbo.User";

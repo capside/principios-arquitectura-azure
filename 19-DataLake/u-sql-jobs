@@ -1,0 +1,129 @@
+-JOB 1-----------------------------
+//From a TSV file, execute select and output to CSV file
+// A) here we define the schema for the imported posts.tsv file
+@posts =
+    EXTRACT id                  int,
+            [type]              string,
+            acceptedanswerid    int?,
+            parentquestionid    int?,
+            creationdate        string,
+            score               int,
+            views               int,
+            ownerid             int,
+            title               string,
+            body                string,
+            tags                string,
+            answers             int,
+            comments            int
+    FROM "posts.tsv"
+    USING Extractors.Tsv();
+
+// B) here we transform the imported data using various aggregate functions
+@results =
+    SELECT
+        ownerid AS userid,
+        SUM(score) AS totalscore,
+        COUNT(*) AS totalposts
+    FROM @posts
+GROUP BY ownerid;
+
+// C) finally we output the transformed data for further analysis or visualization
+OUTPUT @results
+    TO "totalscores.csv"
+    ORDER BY totalscore DESC
+    USING Outputters.Csv();
+-----------------------------------
+
+-JOB 2-----------------------------
+//Create a DB in the DLA catalog, so it can connect to an externa data source
+CREATE DATABASE UserIntegration;
+-----------------------------------
+
+-JOB 3-----------------------------
+//Create datasource from AZURESQLDB (at this moment 'AZURESQLDB' | 'AZURESQLDW' | 'SQLSERVER')
+
+USE DATABASE UserIntegration;
+
+CREATE DATA SOURCE IF NOT EXISTS AcademicSEDb FROM AZURESQLDB WITH
+   ( PROVIDER_STRING = "Database=??YOUR-DB-NAME;Trusted_Connection=False;Encrypt=True",
+     CREDENTIAL = ??YOUR-CREDENTIAL-NAME??,
+     REMOTABLE_TYPES = (bool, byte, sbyte, short, ushort, int, uint, long, ulong, decimal, float, double, string, DateTime) );
+
+CREATE EXTERNAL TABLE User (
+                        [id] int,
+                        [reputation] int,
+                        [created] DateTime,
+                        [displayname] string,
+                        [lastaccess] DateTime,
+                        [location] string
+                    ) FROM AcademicSEDb LOCATION "dbo.User";
+-----------------------------------
+
+-JOB 4-----------------------------
+//Federated queries
+USE DATABASE UserIntegration;
+
+// here we define the schema for the imported posts.tsv file
+@posts =
+    EXTRACT id                  int,
+            [type]              string,
+            acceptedanswerid    int?,
+            parentquestionid    int?,
+            creationdate        string,
+            score               int,
+            views               int,
+            ownerid             int,
+            title               string,
+            body                string,
+            tags                string,
+            answers             int,
+            comments            int
+    FROM "posts.tsv"
+    USING Extractors.Tsv();
+
+// here we find the earliest post date per user... note the C# date conversion
+@earliest_posts =
+    SELECT
+        ownerid,
+        MIN(DateTime.Parse(creationdate)) AS created
+    FROM @posts
+GROUP BY ownerid;
+
+// now we join to the external SQL Database table to add user names to the output
+@results =
+    SELECT
+        u.[displayname] AS [name],
+        ep.[created] AS [first_post_date]
+    FROM
+        User AS u
+            INNER JOIN @earliest_posts AS ep ON ep.[ownerid] == u.[id];
+
+// finally we output the transformed data for further analysis or visualization
+OUTPUT @results
+    TO "firstposts.csv"
+    USING Outputters.Csv();
+-----------------------------------
+
+-JOB 5-----------------------------
+//Another federated query
+USE DATABASE UserIntegration;
+@totals = 
+    EXTRACT userid     int,
+            totalscore int,
+            numofposts  int
+    FROM "datosprueba/totalscores.csv"
+    USING Extractors.Csv();
+
+@results =
+    SELECT
+        u.[displayname] AS [name],
+        tot.[totalscore] AS [score],
+        tot.[numofposts] AS [totalposts]
+    FROM
+        User AS u
+            INNER JOIN @totals AS tot ON tot.[userid] == u.[id];
+
+OUTPUT @results
+    TO "datosprueba/totalscoreswithname.csv"
+    USING Outputters.Csv();
+-----------------------------------

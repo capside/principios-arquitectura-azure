@@ -1,0 +1,20 @@
+USE DATABASE UserIntegration;
+@totals = 
+    EXTRACT userid     int,
+            totalscore int,
+            numofposts  int
+    FROM "datosprueba/totalscores.csv"
+    USING Extractors.Csv();
+
+@results =
+    SELECT
+        u.[displayname] AS [name],
+        tot.[totalscore] AS [score],
+        tot.[numofposts] AS [totalposts]
+    FROM
+        User AS u
+            INNER JOIN @totals AS tot ON tot.[userid] == u.[id];
+
+OUTPUT @results
+    TO "datosprueba/totalscoreswithname.csv"
+    USING Outputters.Csv();

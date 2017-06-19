@@ -87,7 +87,7 @@
                             "ssh": {
                                 "publicKeys": [
                                     {
-                                        "path": "/home/mario/.ssh/authorized_keys",
+                                        "path": "[concat('/home/',parameters('vmUsername'),'/.ssh/authorized_keys')]",
                                         "keyData": "[parameters('sshPublicKey')]"
                                     }
                                 ]

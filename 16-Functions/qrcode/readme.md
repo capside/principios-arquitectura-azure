@@ -1,0 +1,1 @@
+# Codigo del QRCode generator

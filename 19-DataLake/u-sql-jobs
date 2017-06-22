@@ -35,10 +35,18 @@ OUTPUT @results
 -----------------------------------
 
 -JOB 2-----------------------------
-//Create a DB in the DLA catalog, so it can connect to an externa data source
+//Create a DB in the DLA catalog, so it can connect to an external data source
 CREATE DATABASE UserIntegration;
 -----------------------------------
-
+-Credential creation from CLI------
+az dla catalog credential create 
+  --account **DLA Account name** 
+  --credential-name cred1 
+  --database-name UserIntegration
+  --uri tcp://**servername**.database.windows.net 
+  --user-name **SQL DB USER**
+  --password **SQL DB Pass**
+-----------------------------------
 -JOB 3-----------------------------
 //Create datasource from AZURESQLDB (at this moment 'AZURESQLDB' | 'AZURESQLDW' | 'SQLSERVER')
 
@@ -58,6 +66,14 @@ CREATE EXTERNAL TABLE User (
                         [location] string
                     ) FROM AcademicSEDb LOCATION "dbo.User";
 -----------------------------------
+-----------------------------------
+USE DATABASE UserIntegration;
+
+@results = SELECT * FROM User;
+
+OUTPUT @results TO "myselect.csv" USING Outputters.Csv();
+-----------------------------------
+
 
 -JOB 4-----------------------------
 //Federated queries
@@ -111,7 +127,7 @@ USE DATABASE UserIntegration;
     EXTRACT userid     int,
             totalscore int,
             numofposts  int
-    FROM "datosprueba/totalscores.csv"
+    FROM "totalscores.csv"
     USING Extractors.Csv();
 
 @results =
@@ -124,6 +140,6 @@ USE DATABASE UserIntegration;
             INNER JOIN @totals AS tot ON tot.[userid] == u.[id];
 
 OUTPUT @results
-    TO "datosprueba/totalscoreswithname.csv"
+    TO "totalscoreswithname.csv"
     USING Outputters.Csv();
 -----------------------------------

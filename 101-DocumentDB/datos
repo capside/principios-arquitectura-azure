@@ -1,3 +1,7 @@
 TABLE
 
 DefaultEndpointsProtocol=https;AccountName=logssa1;AccountKey=e452LpYiZZAcsOaZc4+Fnwn1o7wqFNyQu7Sb2HF6PX0LravHKY4OVPDX+JWAWNzk2sPRfSgbNYtSOWYfD/n81Q==;
+
+
+Doc DB
+AccountEndpoint=https://viernesdocdb.documents.azure.com:443/;AccountKey=2dSeFuia7VtEIZhM1fLMP1ZnsGw2pMZcceP64fYxfjpJR5biGRhomIfQZdHFiaM3mhMpmmU4VAR7jMfJJv6xeQ==;

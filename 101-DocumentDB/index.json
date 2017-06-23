@@ -1,0 +1,25 @@
+{  "automatic":true,
+   "indexingMode":"Consistent",
+   "includedPaths":[
+      {  "path":"/*",
+         "indexes":[
+            {  "kind":"Range",
+               "dataType":"String",
+               "precision":-1
+            },
+            {  "kind":"Range",
+               "dataType":"Number",
+               "precision":-1
+            },
+            {  "kind":"Spatial",
+               "dataType":"Point"
+            },
+            {  "kind":"Spatial",
+               "dataType":"Polygon"
+            }                
+         ]
+      }
+   ],
+   "excludedPaths":[
+   ]
+}

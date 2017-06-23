@@ -5,3 +5,15 @@ DefaultEndpointsProtocol=https;AccountName=logssa1;AccountKey=e452LpYiZZAcsOaZc4
 
 Doc DB
 AccountEndpoint=https://viernesdocdb.documents.azure.com:443/;AccountKey=2dSeFuia7VtEIZhM1fLMP1ZnsGw2pMZcceP64fYxfjpJR5biGRhomIfQZdHFiaM3mhMpmmU4VAR7jMfJJv6xeQ==;
+
+
+---SQL DB
+Data Source=<server>;Initial Catalog=<DB Name>;User Id=<UserName>;Password=<Password>;
+
+SELECT [id]
+      ,[reputation]
+      ,[created]
+      ,[displayname]
+      ,[lastaccess]
+      ,[location]
+  FROM [dbo].[User]

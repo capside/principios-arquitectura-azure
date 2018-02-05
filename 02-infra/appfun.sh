@@ -47,7 +47,7 @@ update_packages(){
     echo "---Start packages update & install---"
     apt-mark hold walinuxagent
     apt-get update -y
-    apt-get upgrade
+    apt-get upgrade -y
     apt-get install -y $@
     echo "---End packages update & install---"
 }
